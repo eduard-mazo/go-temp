@@ -79,12 +79,12 @@ func main() {
 	port := os.Getenv("PORT")
 
 	if port == "" {
-		log.Fatal("$PORT must be set")
+		port = "5000"
 	}
 	r := mux.NewRouter()
 	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println("Hello Sensor")
-	})
+		fmt.Fprintf(w, "Hello Sensor")
+	}).Methods("GET")
 	r.HandleFunc("/sensor/{sensorID}/temp/{temp}", func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		sensorID, _ := strconv.Atoi(vars["sensorID"])
