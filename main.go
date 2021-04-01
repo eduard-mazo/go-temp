@@ -88,7 +88,7 @@ func main() {
 	r.HandleFunc("/sensor/{sensorID}/temp/{temp}", func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		sensorID, _ := strconv.Atoi(vars["sensorID"])
-		temp, _ := strconv.Atoi(vars["temp"])
+		temp, _ := strconv.ParseFloat(vars["temp"], 32)
 
 		fmt.Fprintf(w, "pushed sensor: %d with temp %d\n", sensorID, temp)
 		dbHandled(temp, sensorID)
