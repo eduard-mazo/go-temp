@@ -59,7 +59,7 @@ func dbHandled(temp int, sensorID int) {
 	}
 	fmt.Println(locationAdd)*/
 	opts := options.Update().SetUpsert(true)
-	filter := bson.D{{Key: "sensorID", Value: sensorID}, {Key: "numSamples", Value: bson.D{{Key: "$lt", Value: 4}}}}
+	filter := bson.D{{Key: "sensorID", Value: sensorID}, {Key: "numSamples", Value: bson.D{{Key: "$lt", Value: 250}}}}
 	update := bson.D{
 		{Key: "$push", Value: bson.D{
 			{Key: "samples", Value: bson.D{
