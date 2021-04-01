@@ -15,7 +15,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func dbHandled(temp int, sensorID int) {
+func dbHandled(temp float64, sensorID int) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(
@@ -88,9 +88,9 @@ func main() {
 	r.HandleFunc("/sensor/{sensorID}/temp/{temp}", func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		sensorID, _ := strconv.Atoi(vars["sensorID"])
-		temp, _ := strconv.ParseFloat(vars["temp"], 32)
+		temp, _ := strconv.ParseFloat(vars["temp"], 64)
 
-		fmt.Fprintf(w, "pushed sensor: %d with temp %d\n", sensorID, temp)
+		fmt.Fprintf(w, "pushed sensor: %d with temp %f\n", sensorID, temp)
 		dbHandled(temp, sensorID)
 	})
 
