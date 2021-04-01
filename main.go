@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 	"time"
 
@@ -75,8 +76,15 @@ func dbHandled(temp int, sensorID int) {
 	fmt.Println(locationUpdate)
 }
 func main() {
-	r := mux.NewRouter()
+	port := os.Getenv("PORT")
 
+	if port == "" {
+		log.Fatal("$PORT must be set")
+	}
+	r := mux.NewRouter()
+	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("Hello Sensor")
+	})
 	r.HandleFunc("/sensor/{sensorID}/temp/{temp}", func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		sensorID, _ := strconv.Atoi(vars["sensorID"])
@@ -86,5 +94,5 @@ func main() {
 		dbHandled(temp, sensorID)
 	})
 
-	http.ListenAndServe(":5000", r)
+	http.ListenAndServe(":"+port, r)
 }
